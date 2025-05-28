@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <title>Conectar Wi-Fi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="css/style.css" rel="stylesheet"/>
+</head>
+<body>
+  <header>
+    <h1>AuTomato</h1>
+    <p>Conecte-se ao Wi-Fi para começar o Pomodoro 🍅</p>
+  </header>
+  <main>
+    <form id="wifi-form" autocomplete="off" novalidate>
+      <label for="ssid" class="sr-only">SSID</label>
+      <input
+        id="ssid"
+        name="ssid"
+        placeholder="SSID"
+        required
+        type="text"
+        autocomplete="off"
+        aria-label="Nome da rede Wi-Fi"
+      />
+      <br/>
+      <label for="password" class="sr-only">Senha</label>
+      <input
+        id="password"
+        name="password"
+        placeholder="Senha"
+        required
+        type="password"
+        autocomplete="new-password"
+        aria-label="Senha do Wi-Fi"
+      />
+      <br/>
+      <button type="submit" id="connect-btn">Conectar</button>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+  </main>
+  <footer>
+    <small>By Giovanna, Giulia, Luisa &amp; Luigi</small>
+  </footer>
+  <script>
+    // Acessibilidade: Oculta label visual, mas mantém para leitores de tela
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        border: 0;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+  <script src="js/wifi.js"></script>
+</body>
+</html>
