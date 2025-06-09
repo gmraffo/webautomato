@@ -109,6 +109,12 @@ button {
   cursor: pointer;
   transition: background-color var(--transition), box-shadow 0.2s, transform 0.15s;
 }
+
+.offline-tip {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--text-subtle);
+}
 button:hover,
 button:focus {
   background-color: var(--primary-dark);

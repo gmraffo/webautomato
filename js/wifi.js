@@ -1,5 +1,6 @@
 const wifiForm = document.getElementById("wifi-form");
 const statusDiv = document.getElementById("status");
+const skipBtn = document.getElementById("skip-btn");
 
 if (wifiForm) {
   wifiForm.addEventListener("submit", async function (e) {
@@ -42,5 +43,11 @@ if (wifiForm) {
         window.location.href = "pre.html";
       }, 1000);
     }
+  });
+}
+
+if (skipBtn) {
+  skipBtn.addEventListener("click", () => {
+    window.location.href = "pre.html";
   });
 }
