@@ -136,10 +136,10 @@ void startStationMode() {
 
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("\nConectado com sucesso!");
-    // Serve o site principal (ex: pre-questionario.html) para quem acessa o ESP32 pela rede
-    server.serveStatic("/", SPIFFS, "/").setDefaultFile("pre-questionario.html");
+    // Serve o site principal (ex: pre.html) para quem acessa o ESP32 pela rede
+    server.serveStatic("/", SPIFFS, "/").setDefaultFile("pre.html");
     server.onNotFound([](AsyncWebServerRequest *request){
-      request->send(SPIFFS, "/pre-questionario.html", "text/html");
+      request->send(SPIFFS, "/pre.html", "text/html");
     });
     server.begin();
   } else {
