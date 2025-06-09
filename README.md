@@ -10,6 +10,7 @@ A página de conexão e início do Pomodoro está disponível em:
 
 Caso o ESP32 não esteja disponível, a tela inicial permite seguir para os questionários
 mesmo sem realizar a conexão com o dispositivo.
+
 Há também o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial.
 Um aviso logo abaixo do botão explica essa opção, permitindo realizar a pesquisa totalmente offline.
 
