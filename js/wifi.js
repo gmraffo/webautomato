@@ -29,7 +29,7 @@ if (wifiForm) {
       if (result.success) {
         statusDiv.innerText = "Conectado com sucesso!";
         setTimeout(() => {
-          window.location.href = "pre-questionario.html"; //passa para próxima página
+          window.location.href = "pre.html"; //passa para próxima página
         }, 1000);
       } else {
         statusDiv.innerText = "Falha ao conectar.";
