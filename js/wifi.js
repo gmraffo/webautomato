@@ -28,15 +28,19 @@ if (wifiForm) {
 
       if (result.success) {
         statusDiv.innerText = "Conectado com sucesso!";
-        setTimeout(() => {
-          window.location.href = "pre.html"; //passa para próxima página
-        }, 1000);
       } else {
-        statusDiv.innerText = "Falha ao conectar.";
+        statusDiv.innerText = "Falha ao conectar. Prosseguindo sem dispositivo.";
       }
+
+      setTimeout(() => {
+        window.location.href = "pre.html"; // passa para a página de questionário
+      }, 1000);
     } catch (err) {
-      statusDiv.innerText = "Erro de conexão. Tente novamente.";
+      statusDiv.innerText = "Não foi possível conectar ao ESP32. Prosseguindo em modo de pesquisa.";
       console.error(err);
+      setTimeout(() => {
+        window.location.href = "pre.html";
+      }, 1000);
     }
   });
 }
