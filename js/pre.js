@@ -1,5 +1,6 @@
 const preForm = document.getElementById("pre-form");
 const sendOnlyBtn = document.getElementById("send-only-btn");
+const viewQueueBtn = document.getElementById("view-queue-btn");
 
 
 const PRE_QUEUE_KEY = "preQueue";
@@ -88,5 +89,16 @@ if (preForm) {
 if (sendOnlyBtn) {
   sendOnlyBtn.addEventListener("click", function () {
     enviarDados("obrigado.html");
+  });
+}
+
+if (viewQueueBtn) {
+  viewQueueBtn.addEventListener("click", function () {
+    const fila = JSON.parse(localStorage.getItem(PRE_QUEUE_KEY) || "[]");
+    if (fila.length) {
+      alert(JSON.stringify(fila, null, 2));
+    } else {
+      alert("Nenhuma resposta salva.");
+    }
   });
 }

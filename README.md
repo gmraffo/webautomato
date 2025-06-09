@@ -10,7 +10,7 @@ A página de conexão e início do Pomodoro está disponível em:
 
 Caso o ESP32 não esteja disponível, a tela inicial permite seguir para os questionários mesmo sem realizar a conexão.
 Há o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial e um aviso explicando que a pesquisa pode ser feita totalmente offline.
-Se a conexão falhar, as respostas do questionário inicial são guardadas no navegador (chave `preQueue`) e enviadas automaticamente quando a rede voltar.
+Se a conexão falhar, as respostas do questionário inicial são guardadas no navegador (chave `preQueue`) e enviadas automaticamente quando a rede voltar. Há também um botão **"Ver respostas salvas"** na página da pesquisa que exibe essas informações offline.
 
 No questionário inicial é possível apenas enviar as respostas se preferir não iniciar o Pomodoro. Há dois botões: **"Enviar e iniciar Pomodoro"** ou **"Enviar sem iniciar"**, levando, respectivamente, ao cronômetro ou à página de agradecimento.
 
