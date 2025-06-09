@@ -1,44 +1,91 @@
 const preForm = document.getElementById("pre-form");
-if (preForm) {
-  preForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
+const sendOnlyBtn = document.getElementById("send-only-btn");
 
-//seleção dos botões
-    const fatigue = document.querySelector('input[name="fatigue"]:checked');
-    const motivation = document.querySelector('input[name="motivation"]:checked');
-    const productivity = document.querySelector('input[name="productivity"]:checked');
+const PRE_QUEUE_KEY = "preQueue";
 
-    if (!fatigue || !motivation || !productivity) {
-      alert("Por favor, responda todas as perguntas antes de seguir em frente!");
-      return;
-    }
+async function enviarFilaArmazenada() {
+  const fila = JSON.parse(localStorage.getItem(PRE_QUEUE_KEY) || "[]");
+  if (!fila.length) return;
 
-    // Melhoria: Tratamento de erros usando try/catch
+  const restantes = [];
+  for (const dados of fila) {
     try {
-      const resposta = await fetch("https://script.google.com/macros/s/AKfycbyf4K3u5_Jg3LeEQr41e3W8JWjBo5wKKpEsjBcnmy1H6-ain0iIgIFreFg6k32JK6GZuA/exec", { //planilha de respostas
-        method: "POST",
-        body: JSON.stringify({
-          fatigue: fatigue.value,
-          motivation: motivation.value,
-          productivity: productivity.value
-        }),
-        headers: {
-          "Content-Type": "application/json"
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbyf4K3u5_Jg3LeEQr41e3W8JWjBo5wKKpEsjBcnmy1H6-ain0iIgIFreFg6k32JK6GZuA/exec",
+        {
+          method: "POST",
+          body: JSON.stringify(dados),
+          headers: { "Content-Type": "application/json" },
+          mode: "no-cors",
         }
-      });
-
-      if (resposta.ok) {
-        //mensagem antes de redirecionar para servir como confirmação
-        alert("Dados enviados com sucesso! Redirecionando...");
-        setTimeout(() => {
-          window.location.href = "pomodoro.html"; //passa pro próximo
-        }, 1200);
-      } else {
-        alert("Erro ao enviar dados.");
-      }
-    } catch (err) {
-      alert("Erro de conexão. Tente novamente.");
-      console.error(err);
+      );
+    } catch (_) {
+      restantes.push(dados);
     }
+  }
+
+  if (restantes.length) {
+    localStorage.setItem(PRE_QUEUE_KEY, JSON.stringify(restantes));
+  } else {
+    localStorage.removeItem(PRE_QUEUE_KEY);
+  }
+}
+
+// tenta enviar dados armazenados sempre que a página carregar
+window.addEventListener("load", enviarFilaArmazenada);
+
+async function enviarDados(redirecionarPara) {
+  // seleção dos botões
+  const fatigue = document.querySelector('input[name="fatigue"]:checked');
+  const motivation = document.querySelector('input[name="motivation"]:checked');
+  const productivity = document.querySelector('input[name="productivity"]:checked');
+
+  if (!fatigue || !motivation || !productivity) {
+    alert("Por favor, responda todas as perguntas antes de seguir em frente!");
+    return;
+  }
+
+  const payload = {
+    fatigue: fatigue.value,
+    motivation: motivation.value,
+    productivity: productivity.value,
+  };
+
+  try {
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbyf4K3u5_Jg3LeEQr41e3W8JWjBo5wKKpEsjBcnmy1H6-ain0iIgIFreFg6k32JK6GZuA/exec",
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        mode: "no-cors",
+      }
+    );
+    alert("Dados enviados com sucesso! Redirecionando...");
+  } catch (err) {
+    // salva localmente caso esteja sem conexão
+    const fila = JSON.parse(localStorage.getItem(PRE_QUEUE_KEY) || "[]");
+    fila.push(payload);
+    localStorage.setItem(PRE_QUEUE_KEY, JSON.stringify(fila));
+    alert(
+      "Sem conexão. Respostas salvas e serão enviadas automaticamente depois."
+    );
+  }
+
+  setTimeout(() => {
+    window.location.href = redirecionarPara;
+  }, 1200);
+}
+
+if (preForm) {
+  preForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    enviarDados("pomodoro.html");
+  });
+}
+
+if (sendOnlyBtn) {
+  sendOnlyBtn.addEventListener("click", function () {
+    enviarDados("obrigado.html");
   });
 }
