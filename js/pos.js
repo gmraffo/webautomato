@@ -36,7 +36,7 @@ if (form) {
       if (resposta.ok) {
         alert("Dados enviados com sucesso!");
         form.reset(); //limpa o formulário após sucesso
-        window.location.href = "agradecimento.html"; // vai p página final
+        window.location.href = "obrigado.html"; // vai p página final
       } else {
         alert("Erro ao enviar os dados.");
       }
