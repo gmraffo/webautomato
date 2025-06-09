@@ -14,7 +14,14 @@ mesmo sem realizar a conexão com o dispositivo.
 Há também o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial.
 Um aviso logo abaixo do botão explica essa opção, permitindo realizar a pesquisa totalmente offline.
 
----
+No questionário inicial é possível apenas enviar as respostas se preferir não iniciar o Pomodoro.
+Há dois botões: **"Enviar e iniciar Pomodoro"** ou **"Enviar sem iniciar"**, levando, respectivamente, ao cronômetro ou à página de agradecimento.
+
+=======
+
+Há também o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial.
+Um aviso logo abaixo do botão explica essa opção, permitindo realizar a pesquisa totalmente offline.
+
 
 ## ⚙️ O que o código faz
 
