@@ -8,21 +8,11 @@ A página de conexão e início do Pomodoro está disponível em:
 
 👉 **https://gmraffo.github.io/webautomato/**
 
-Caso o ESP32 não esteja disponível, a tela inicial permite seguir para os questionários
-mesmo sem realizar a conexão com o dispositivo.
+Caso o ESP32 não esteja disponível, a tela inicial permite seguir para os questionários mesmo sem realizar a conexão.
+Há o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial e um aviso explicando que a pesquisa pode ser feita totalmente offline.
+Se a conexão falhar, as respostas do questionário inicial são guardadas no navegador (chave `preQueue`) e enviadas automaticamente quando a rede voltar.
 
-Há também o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial.
-Um aviso logo abaixo do botão explica essa opção, permitindo realizar a pesquisa totalmente offline.
-Se a conexão com a internet falhar, as respostas do questionário inicial são guardadas no navegador e enviadas automaticamente quando a rede voltar.
-
-Há também o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial.
-Um aviso logo abaixo do botão explica essa opção, permitindo realizar a pesquisa totalmente offline.
-
-No questionário inicial é possível apenas enviar as respostas se preferir não iniciar o Pomodoro.
-Há dois botões: **"Enviar e iniciar Pomodoro"** ou **"Enviar sem iniciar"**, levando, respectivamente, ao cronômetro ou à página de agradecimento.
-
-Há também o botão **"Continuar sem conectar"**, que leva direto ao questionário inicial.
-Um aviso logo abaixo do botão explica essa opção, permitindo realizar a pesquisa totalmente offline.
+No questionário inicial é possível apenas enviar as respostas se preferir não iniciar o Pomodoro. Há dois botões: **"Enviar e iniciar Pomodoro"** ou **"Enviar sem iniciar"**, levando, respectivamente, ao cronômetro ou à página de agradecimento.
 
 
 ## ⚙️ O que o código faz
