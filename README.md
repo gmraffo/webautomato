@@ -23,7 +23,8 @@ A página de conexão e início do Pomodoro está disponível em:
 - O site envia os dados da rede Wi-Fi (SSID e senha) para o ESP32 via POST `/connect`
 - Após conectado, o ESP32 pode ser controlado remotamente para:
   - Iniciar um motor NEMA 17 (girando enquanto o Pomodoro roda)
-  - Exibir o tempo restante em uma tela conectada ao hardware (em desenvolvimento)
+  - Exibir o tempo restante em uma tela TFT conectada ao hardware
+  - Interromper a contagem com um botão de emergência
 
 ### 3. **Firebase**
 - Utiliza Firebase Realtime Database para manter sincronização entre web e ESP32 (nos modos online)

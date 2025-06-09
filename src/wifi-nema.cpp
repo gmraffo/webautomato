@@ -4,12 +4,17 @@
 #include <SPIFFS.h>
 #include <Preferences.h>
 #include <ArduinoJson.h> // Usado p/ JSON recebido do frontend
-#include <AccelStepper.h> //Usado para girar o NEMA 17
+#include <AccelStepper.h> // Usado para girar o NEMA 17
+#include <TFT_eSPI.h>     // Biblioteca para display TFT
 
 #define STEP_PIN  33
-#define DIR_PIN   25 
+#define DIR_PIN   25
+#define EMERGENCY_PIN 27
 
 AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
+
+TFT_eSPI tft = TFT_eSPI();
+unsigned long lastDisplayUpdate = 0;
 
 unsigned long pomodoroEndMillis = 0;
 bool pomodoroActive = false;
@@ -20,6 +25,16 @@ AsyncWebServer server(80);         // Servidor web assíncrono na porta 80
 DNSServer dnsServer;               // Servidor DNS para redirecionar qualquer domínio ao ESP32 no modoAP // Problema DNS: mais funcional para IOS e LINUX
 bool isConfigured = false;         // Já existe configuração de Wi-Fi salva?
 const byte DNS_PORT = 53;          // Porta padrão
+
+void displayTime(unsigned long remaining) {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(2);
+  char buf[6];
+  sprintf(buf, "%02lu:%02lu", remaining / 60, remaining % 60);
+  tft.drawString(buf, tft.width() / 2, tft.height() / 2);
+}
 
 // Função para configurar rotas de portal cativo
 // Todos esses acessos redirecionam para "/"
@@ -150,12 +165,17 @@ void startStationMode() {
 }
 
 void setup() {
-	//WIFI
+        //WIFI
   Serial.begin(115200);
   if (!SPIFFS.begin(true)) {
     Serial.println("Erro ao montar SPIFFS");
     return;
   }
+
+  pinMode(EMERGENCY_PIN, INPUT_PULLUP);
+  tft.init();
+  tft.setRotation(1);
+  tft.fillScreen(TFT_BLACK);
 
   // Verifica se já existe configuração Wi-Fi salva
   preferences.begin("wifi", true);
@@ -183,8 +203,10 @@ void setup() {
         int duration = doc["duration"]; // duração em segundos
         pomodoroEndMillis = millis() + (duration * 1000);
         pomodoroActive = true;
+        lastDisplayUpdate = 0;
+        displayTime(duration);
         // Movimento do motor
-        stepper.move(200); 
+        stepper.move(200);
         request->send(200, "application/json", "{\"started\":true}");
         return;
       }
@@ -198,11 +220,28 @@ void loop() {
   if (!isConfigured) {
     dnsServer.processNextRequest();
   }
-  
-  //
+
+  if (digitalRead(EMERGENCY_PIN) == LOW) {
+    pomodoroActive = false;
+    stepper.stop();
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextSize(2);
+    tft.setCursor(10, 10);
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+    tft.print("EMERGENCIA");
+  }
+
   if (pomodoroActive) {
     stepper.run();
-    if (millis() >= pomodoroEndMillis) {
+    unsigned long remaining = 0;
+    if (pomodoroEndMillis > millis()) {
+      remaining = (pomodoroEndMillis - millis()) / 1000;
+    }
+    if (millis() - lastDisplayUpdate >= 1000) {
+      lastDisplayUpdate = millis();
+      displayTime(remaining);
+    }
+    if (remaining == 0) {
       pomodoroActive = false;
     }
   }
